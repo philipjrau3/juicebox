@@ -4,7 +4,7 @@ const { client, getAllUsers, createUser, updateUser, createPost, updatePost, get
 
 async function createInitialUsers() {
     try {
-        console.log("Starting to create users...")
+        //console.log("Starting to create users...")
 
         await createUser 
         ({ 
@@ -29,9 +29,9 @@ async function createInitialUsers() {
         });
         // console.log(albert); console.log(sandra);
 
-        console.log("Finished creating user!");
+        //console.log("Finished creating user!");
     } catch(error) {
-        console.error("Error creating user!");
+        //console.error("Error creating user!");
         throw error;
     }
 }
@@ -60,7 +60,7 @@ async function createInitialPosts (){
 // this function should call a query which drops all tables from our database
 async function dropTables() {
     try {
-        console.log("Starting drop tables...");
+        //console.log("Starting drop tables...");
 
         await client.query(`
         DROP TABLE IF EXISTS posts;
@@ -71,9 +71,9 @@ async function dropTables() {
       `);
       
 
-      console.log("Finished dropping tables!")
+      //console.log("Finished dropping tables!")
     } catch (error) {
-        console.error("Error dropping tables!")
+        //console.error("Error dropping tables!")
       throw error; // we pass the error up to the function that calls dropTables
     }
   }
@@ -81,7 +81,7 @@ async function dropTables() {
   // this function should call a query which creates all tables for our database 
   async function createTables() {
     try {
-        console.log("Starting build tables...")
+        //console.log("Starting build tables...")
 
       await client.query(`
             CREATE TABLE users (
@@ -92,21 +92,21 @@ async function dropTables() {
                 location varchar(255) NOT NULL,
                 active BOOLEAN DEFAULT true
             );
-      `)
+      `)                  /* again, "authorId", foreign keys need double quotes & INT REF*/
         await client.query(`
         CREATE TABLE posts(
         id SERIAL PRIMARY KEY,
-        "authorId" INTEGER REFERENCES users(id) NOT NULL,
+        "authorId" INTEGER REFERENCES users(id) NOT NULL, 
         title VARCHAR(255) NOT NULL,
         content TEXT NOT NULL,
         active BOOLEAN DEFAULT true
         );
         `);
-         console.log("Finished building tables!")       
+         //console.log("Finished building tables!")       
 
 
     } catch (error) {
-        console.error("Error building tables!")
+        //console.error("Error building tables!")
       throw error; // we pass the error up to the function that calls createTables
     }
   }

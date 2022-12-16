@@ -33,13 +33,15 @@ async function createPost({
     title,
     content
   }) {
-    try {
+    try {                 //authorId is a foreign key so it needs double quotes›
         const {rows: [post]} = await client.query(`
-        INSERT INTO posts("authorId", title, content)
+        INSERT INTO posts("authorId", title, content)   
         VALUES ($1, $2, $3)
-        ON CONFLICT ("authorId") DO NOTHING
+        
         RETURNING *;
     `, [authorId, title, content]);
+    
+    return post;
     } catch (error) {
       throw error;
     }
@@ -85,7 +87,7 @@ async function updatePost(id, fields = {}) {
         WHERE id=${id}
         RETURNING *;
         `, Object.values(fields));
-        console.log(post);
+        //console.log(post);
         return post;
         
     } catch (error) {
@@ -95,7 +97,7 @@ async function updatePost(id, fields = {}) {
 
   async function getAllPosts() {
     const {rows} = await client.query(
-        `SELECT "authorId", title, content 
+        `SELECT *
         FROM posts;`
     );
     return rows;
