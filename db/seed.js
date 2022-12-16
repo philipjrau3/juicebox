@@ -63,12 +63,14 @@ async function dropTables() {
         //console.log("Starting drop tables...");
 
         await client.query(`
-        DROP TABLE IF EXISTS posts;
+      DROP TABLE IF EXISTS post_tags;
+      DROP TABLE IF EXISTS tags;
+      DROP TABLE IF EXISTS posts;
+      DROP TABLE IF EXISTS users;
+
         `);
 
-      await client.query(`
-            DROP TABLE IF EXISTS users;
-      `);
+    
       
 
       //console.log("Finished dropping tables!")
@@ -103,7 +105,19 @@ async function dropTables() {
         );
         `);
          //console.log("Finished building tables!")       
+         await client.query(`
+         CREATE TABLE tags(
+         id SERIAL PRIMARY KEY,
+         name VARCHAR(255) NOT NULL
+         );
+         `);
 
+         await client.query(`
+         CREATE TABLE post_tags(
+         "postId" INTEGER REFERENCES posts(id) UNIQUE NOT NULL,
+         "tagId" INTEGER REFERENCES tags(id) UNIQUE NOT NULL
+         );
+         `);
 
     } catch (error) {
         //console.error("Error building tables!")
